@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI时代 · 产品经理数字员工架构</title>
+<style>
+:root {
+  --bg: #0A0F1E;
+  --bg2: #111827;
+  --bg3: #1F2937;
+  --text: #F1F5F9;
+  --text2: #94A3B8;
+  --text3: #64748B;
+  --red: #E2231A;
+  --blue: #3B82F6;
+  --purple: #8B5CF6;
+  --green: #10B981;
+  --amber: #F59E0B;
+  --cyan: #06B6D4;
+  --rose: #FB7185;
+  --border: rgba(255,255,255,0.06);
+  --glow-blue: 0 0 30px rgba(59,130,246,0.15);
+  --glow-red: 0 0 30px rgba(226,35,26,0.12);
+  --glow-purple: 0 0 30px rgba(139,92,246,0.12);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: -apple-system, 'PingFang SC', 'SF Pro Display', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding: 40px 20px; -webkit-font-smoothing: antialiased; }
+.container { max-width: 1200px; margin: 0 auto; }
+
+/* Header */
+.header { text-align: center; margin-bottom: 40px; }
+.header-label { font-size: 11px; letter-spacing: 6px; color: var(--red); text-transform: uppercase; margin-bottom: 8px; font-weight: 600; }
+.header-title { font-size: 34px; font-weight: 800; margin-bottom: 8px; background: linear-gradient(135deg, var(--text), var(--blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.header-sub { font-size: 14px; color: var(--text2); line-height: 1.6; }
+.header-sub strong { color: var(--text); }
+
+/* 顶层 — 产品经理（真人） */
+.pm-human { display: flex; justify-content: center; margin-bottom: 12px; }
+.pm-human-card { background: linear-gradient(135deg, rgba(226,35,26,0.1), rgba(59,130,246,0.08)); border: 1.5px solid rgba(226,35,26,0.25); border-radius: 18px; padding: 22px 40px; text-align: center; max-width: 420px; width: 100%; position: relative; }
+.pm-human-title { font-size: 20px; font-weight: 800; margin-bottom: 4px; }
+.pm-human-role { font-size: 12px; color: var(--text2); margin-bottom: 10px; }
+.pm-human-skills { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; }
+.pm-human-skill { font-size: 10px; color: var(--text2); background: var(--bg2); border: 1px solid var(--border); border-radius: 6px; padding: 3px 10px; }
+
+/* 连接器 */
+.connector { display: flex; justify-content: center; padding: 6px 0; }
+.connector-v { display: flex; flex-direction: column; align-items: center; }
+.connector-line { width: 2px; height: 20px; background: linear-gradient(180deg, var(--blue), rgba(59,130,246,0.3)); }
+.connector-arrow { color: var(--blue); font-size: 9px; margin-top: -2px; }
+.connector-label { font-size: 10px; color: var(--text3); margin-top: 2px; }
+
+/* 编排调度层 */
+.orchestrator { display: flex; justify-content: center; margin-bottom: 12px; }
+.orchestrator-card { background: var(--bg2); border: 1.5px solid rgba(59,130,246,0.35); border-radius: 20px; padding: 20px 32px; text-align: center; max-width: 680px; width: 100%; box-shadow: var(--glow-blue); position: relative; }
+.orchestrator-badge { position: absolute; top: -11px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, var(--blue), var(--purple)); color: #fff; font-size: 10px; font-weight: 700; padding: 3px 16px; border-radius: 10px; letter-spacing: 2px; white-space: nowrap; }
+.orchestrator-title { font-size: 18px; font-weight: 800; margin-top: 6px; margin-bottom: 8px; }
+.orchestrator-features { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; }
+.orchestrator-feat { font-size: 10px; background: rgba(59,130,246,0.08); color: var(--blue); border-radius: 6px; padding: 3px 10px; border: 1px solid rgba(59,130,246,0.12); }
+
+/* 四大域 */
+.domains-section { margin-bottom: 28px; }
+.domains-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
+
+.domain-col { display: flex; flex-direction: column; gap: 10px; }
+.domain-header { border-radius: 14px; padding: 14px 12px; text-align: center; position: relative; }
+.domain-header::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: 14px 14px 0 0; }
+.domain-icon { font-size: 26px; margin-bottom: 4px; }
+.domain-name { font-size: 15px; font-weight: 700; }
+.domain-desc { font-size: 10px; color: var(--text3); margin-top: 2px; line-height: 1.4; }
+
+/* 域颜色 */
+.domain-project .domain-header { background: var(--bg2); border: 1px solid rgba(59,130,246,0.2); }
+.domain-project .domain-header::before { background: var(--blue); }
+.domain-requirement .domain-header { background: var(--bg2); border: 1px solid rgba(16,185,129,0.2); }
+.domain-requirement .domain-header::before { background: var(--green); }
+.domain-solution .domain-header { background: var(--bg2); border: 1px solid rgba(139,92,246,0.2); }
+.domain-solution .domain-header::before { background: var(--purple); }
+.domain-data .domain-header { background: var(--bg2); border: 1px solid rgba(245,158,11,0.2); }
+.domain-data .domain-header::before { background: var(--amber); }
+.domain-ops .domain-header { background: var(--bg2); border: 1px solid rgba(6,182,212,0.2); }
+.domain-ops .domain-header::before { background: var(--cyan); }
+
+/* 数字人卡片 */
+.twin-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 10px; position: relative; transition: all 0.3s; }
+.twin-card:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,0.3); }
+.twin-top { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.twin-avatar { width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+.twin-info { flex: 1; min-width: 0; }
+.twin-name { font-size: 12px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.twin-owner { font-size: 9px; color: var(--text3); }
+.twin-abilities { display: flex; gap: 3px; flex-wrap: wrap; }
+.twin-ability { font-size: 8px; padding: 1px 5px; border-radius: 3px; white-space: nowrap; }
+
+/* 数字人颜色 */
+.twin-blue .twin-avatar { background: rgba(59,130,246,0.15); }
+.twin-blue .twin-ability { background: rgba(59,130,246,0.1); color: var(--blue); }
+.twin-green .twin-avatar { background: rgba(16,185,129,0.15); }
+.twin-green .twin-ability { background: rgba(16,185,129,0.1); color: var(--green); }
+.twin-purple .twin-avatar { background: rgba(139,92,246,0.15); }
+.twin-purple .twin-ability { background: rgba(139,92,246,0.1); color: var(--purple); }
+.twin-amber .twin-avatar { background: rgba(245,158,11,0.15); }
+.twin-amber .twin-ability { background: rgba(245,158,11,0.1); color: var(--amber); }
+.twin-cyan .twin-avatar { background: rgba(6,182,212,0.15); }
+.twin-cyan .twin-ability { background: rgba(6,182,212,0.1); color: var(--cyan); }
+
+/* 能力层 */
+.capability-section { margin-bottom: 28px; }
+.capability-title { font-size: 14px; font-weight: 700; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+.capability-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.cap-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; padding: 16px; position: relative; overflow: hidden; }
+.cap-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; }
+.cap-phase { font-size: 10px; font-weight: 700; letter-spacing: 1px; margin-bottom: 8px; }
+.cap-name { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+.cap-sub { font-size: 11px; color: var(--text2); margin-bottom: 10px; }
+.cap-items { display: flex; flex-direction: column; gap: 6px; }
+.cap-item { display: flex; align-items: flex-start; gap: 6px; font-size: 11px; color: var(--text2); line-height: 1.4; }
+.cap-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
+.cap-progress { margin-top: 10px; display: flex; align-items: center; gap: 8px; }
+.cap-bar-bg { flex: 1; height: 4px; background: var(--bg); border-radius: 2px; overflow: hidden; }
+.cap-bar { height: 100%; border-radius: 2px; }
+.cap-pct { font-size: 10px; font-weight: 600; flex-shrink: 0; }
+
+/* Phase 1 */
+.cap-p1::before { background: var(--green); }
+.cap-p1 .cap-phase { color: var(--green); }
+.cap-p1 .cap-dot { background: var(--green); }
+.cap-p1 .cap-bar { background: var(--green); }
+.cap-p1 .cap-pct { color: var(--green); }
+/* Phase 2 */
+.cap-p2::before { background: var(--blue); }
+.cap-p2 .cap-phase { color: var(--blue); }
+.cap-p2 .cap-dot { background: var(--blue); }
+.cap-p2 .cap-bar { background: var(--blue); }
+.cap-p2 .cap-pct { color: var(--blue); }
+/* Phase 3 */
+.cap-p3::before { background: var(--purple); }
+.cap-p3 .cap-phase { color: var(--purple); }
+.cap-p3 .cap-dot { background: var(--purple); }
+.cap-p3 .cap-bar { background: var(--purple); }
+.cap-p3 .cap-pct { color: var(--purple); }
+
+/* 编排场景 */
+.scenario-section { background: var(--bg2); border: 1px solid var(--border); border-radius: 16px; padding: 22px; margin-bottom: 28px; }
+.scenario-title { font-size: 14px; font-weight: 700; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+.scenario-flow { display: flex; align-items: center; gap: 8px; overflow-x: auto; padding: 8px 0; }
+.scenario-node { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; text-align: center; flex-shrink: 0; min-width: 110px; }
+.scenario-node-icon { font-size: 22px; margin-bottom: 4px; }
+.scenario-node-name { font-size: 11px; font-weight: 600; margin-bottom: 2px; }
+.scenario-node-desc { font-size: 9px; color: var(--text3); }
+.scenario-arrow { color: var(--text3); font-size: 16px; flex-shrink: 0; }
+.scenario-node.highlight { border-color: rgba(139,92,246,0.3); box-shadow: 0 0 20px rgba(139,92,246,0.08); }
+
+/* 底部数据 */
+.stats-section { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 28px; }
+.stat-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 16px; text-align: center; }
+.stat-num { font-size: 28px; font-weight: 800; }
+.stat-label { font-size: 11px; color: var(--text3); margin-top: 2px; }
+
+.footer { text-align: center; margin-top: 32px; font-size: 11px; color: var(--text3); }
+
+@media (max-width: 768px) {
+  .domains-grid { grid-template-columns: repeat(2, 1fr); }
+  .capability-grid { grid-template-columns: 1fr; }
+  .stats-section { grid-template-columns: repeat(2, 1fr); }
+  .scenario-flow { gap: 4px; }
+  .scenario-node { min-width: 90px; padding: 10px 8px; }
+  .scenario-node-name { font-size: 10px; }
+  .scenario-node-desc { font-size: 8px; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- Header -->
+<div class="header">
+  <div class="header-label">Digital Twin · PM</div>
+  <div class="header-title">产品经理 · 数字员工架构</div>
+  <div class="header-sub">可编排的员工数字人 — 从<strong>问答助手</strong>到<strong>自主产线</strong>，再到<strong>数字人军团协作</strong></div>
+</div>
+
+<!-- 顶层：真人产品经理 -->
+<div class="pm-human">
+  <div class="pm-human-card">
+    <div class="pm-human-title">👤 产品经理（真人）</div>
+    <div class="pm-human-role">决策者 · 培养者 · 编排者</div>
+    <div class="pm-human-skills">
+      <span class="pm-human-skill">审批关键决策</span>
+      <span class="pm-human-skill">定义产品方向</span>
+      <span class="pm-human-skill">训练数字分身</span>
+      <span class="pm-human-skill">编排数字人军团</span>
+    </div>
+  </div>
+</div>
+
+<div class="connector"><div class="connector-v"><div class="connector-line"></div><div class="connector-arrow">▼</div><div class="connector-label">培养 · 升级 · 迭代</div></div></div>
+
+<!-- 编排调度层 -->
+<div class="orchestrator">
+  <div class="orchestrator-card">
+    <div class="orchestrator-badge">🧠 编排调度中心</div>
+    <div class="orchestrator-title">数字人编排引擎</div>
+    <div class="orchestrator-features">
+      <span class="orchestrator-feat">意图识别</span>
+      <span class="orchestrator-feat">任务拆解</span>
+      <span class="orchestrator-feat">数字人匹配</span>
+      <span class="orchestrator-feat">多人协同</span>
+      <span class="orchestrator-feat">结果聚合</span>
+      <span class="orchestrator-feat">质量回检</span>
+      <span class="orchestrator-feat">持续学习</span>
+    </div>
+  </div>
+</div>
+
+<div class="connector"><div class="connector-v"><div class="connector-line"></div><div class="connector-arrow">▼ 调度分发</div></div></div>
+
+<!-- 四大工作域 + 数字人 -->
+<div class="domains-section">
+  <div class="domains-grid">
+
+    <!-- 项目管理域 -->
+    <div class="domain-col domain-project">
+      <div class="domain-header">
+        <div class="domain-icon">📋</div>
+        <div class="domain-name">项目管理</div>
+        <div class="domain-desc">项目跟进 · 排期 · 风险</div>
+      </div>
+      <div class="twin-card twin-blue">
+        <div class="twin-top">
+          <div class="twin-avatar">🤖</div>
+          <div class="twin-info">
+            <div class="twin-name">员工A · 项目跟踪</div>
+            <div class="twin-owner">← 张三的数字人</div>
+          </div>
+        </div>
+        <div class="twin-abilities">
+          <span class="twin-ability">行云流转</span>
+          <span class="twin-ability">排期管理</span>
+          <span class="twin-ability">风险预警</span>
+        </div>
+      </div>
+      <div class="twin-card twin-blue">
+        <div class="twin-top">
+          <div class="twin-avatar">🤖</div>
+          <div class="twin-info">
+            <div class="twin-name">员工B · 进度同步</div>
+            <div class="twin-owner">← 李四的数字人</div>
+          </div>
+        </div>
+        <div class="twin-abilities">
+          <span class="twin-ability">站会纪要</span>
+          <span class="twin-ability">里程碑</span>
+          <span class="twin-ability">日报周报</span>
+        </div>
+      </div>
+      <div class="twin-card twin-blue">
+        <div class="twin-top">
+          <div class="twin-avatar">🤖</div>
+          <div class="twin-info">
+            <div class="twin-name">员工C · 资源协调</div>
+            <div class="twin-owner">← 王五的数字人</div>
+          </div>
+        </div>
+        <div class="twin-abilities">
+          <span class="twin-ability">人力盘点</span>
+          <span class="twin-ability">跨组协调</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 需求管理域 -->
+    <div class="domain-col domain-requirement">
+      <div class="domain-header">
+        <div class="domain-icon">📝</div>
+        <div class="domain-name">需求管理</div>
+        <div class="domain-desc">需求采集 · 分析 · 优先级</div>
+      </div>
+      <div class="twin-card twin-green">
+        <div class="twin-top">
+          <div class="twin-avatar">🤖</div>
+          <div class="twin-info">
+            <div class="twin-name">员工A · 需求分析</div>
+            <div class="twin-owner">← 赵六的数字人</div>
+          </div>
+        </div>
+        <div class="twin-abilities">
+          <span class="twin-ability">线上问题</span>
+          <span class="twin-ability">需求拆解</span>
+          <span class="twin-ability">PRD草稿</span>
+        </div>
+      </div>
+      <div class="twin-card twin-green">
+        <div class="twin-top">
+          <div class="twin-avatar">🤖</div>
+          <div class="twin-info">
+            <div class="twin-name">员工B · 竞品调研</div>
+            <div class="twin-owner">← 孙七的数字人</div>
+          </div>
+        </div>
+        <div class="twin-abilities">
+          <span class="twin-ability">竞品监控</span>
+          <span class="twin-ability">功能对比</span>
+          <span class="twin-ability">趋势分析</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 方案策划域 -->
+    <div class="domain-col domain-solution">
+      <div class="domain-header">
+        <div class="domain-icon">💡</div>
+        <div class="domain-name">方案策划</div>
+        <div class="domain-desc">方案设计 · 文档 · 评审</div>
+      </div>
+      <div class="twin-card twin-purple">
+        <div class="twin-top">
+          <div class="twin-avatar">🤖</div>
+          <div class="twin-info">
+            <div class="twin-name">员工A · 方案生成</div>
+            <div class="twin-owner">← 周八的数字人</div>
+          </div>
+        </div>
+        <div class="twin-abilities">
+          <span class="twin-ability">产品方案</span>
+          <span class="twin-ability">白皮书</span>
+          <span class="twin-ability">设计稿</span>
+        </div>
+      </div>
+      <div class="twin-card twin-purple">
+        <div class="twin-top">
+          <div class="twin-avatar">🤖</div>
+          <div class="twin-info">
+            <div class="twin-name">员工B · 方案评审</div>
+            <div class="twin-owner">← 吴九的数字人</div>
+          </div>
+        </div>
+        <div class="twin-abilities">
+          <span class="twin-ability">逻辑校验</span>
+          <span class="twin-ability">可行性</span>
+          <span class="twin-ability">风险评估</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 数据域 -->
+    <div class="domain-col domain-data">
+      <div class="domain-header">
+        <div class="domain-icon">📊</div>
+        <div class="domain-name">数据分析</div>
+        <div class="domain-desc">数据看板 · 洞察 · 决策</div>
+      </div>
+      <div class="twin-card twin-amber">
+        <div class="twin-top">
+          <div class="twin-avatar">🤖</div>
+          <div class="twin-info">
+            <div class="twin-name">员工A · 数据分析</div>
+            <div class="twin-owner">← 郑十的数字人</div>
+          </div>
+        </div>
+        <div class="twin-abilities">
+          <span class="twin-ability">SQL查询</span>
+          <span class="twin-ability">指标监控</span>
+          <span class="twin-ability">异常告警</span>
+        </div>
+      </div>
+      <div class="twin-card twin-amber">
+        <div class="twin-top">
+          <div class="twin-avatar">🤖</div>
+          <div class="twin-info">
+            <div class="twin-name">员工B · 决策支持</div>
+            <div class="twin-owner">← 冯十一的数字人</div>
+          </div>
+        </div>
+        <div class="twin-abilities">
+          <span class="twin-ability">A/B实验</span>
+          <span class="twin-ability">归因分析</span>
+          <span class="twin-ability">报告输出</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 产品运营域 -->
+    <div class="domain-col domain-ops">
+      <div class="domain-header">
+        <div class="domain-icon">🚀</div>
+        <div class="domain-name">产品运营</div>
+        <div class="domain-desc">用户增长 · 活动 · 转化</div>
+      </div>
+      <div class="twin-card twin-cyan">
+        <div class="twin-top">
+          <div class="twin-avatar">🤖</div>
+          <div class="twin-info">
+            <div class="twin-name">员工A · 运营策略</div>
+            <div class="twin-owner">← 陈十二的数字人</div>
+          </div>
+        </div>
+        <div class="twin-abilities">
+          <span class="twin-ability">活动策划</span>
+          <span class="twin-ability">渠道投放</span>
+          <span class="twin-ability">转化漏斗</span>
+        </div>
+      </div>
+      <div class="twin-card twin-cyan">
+        <div class="twin-top">
+          <div class="twin-avatar">🤖</div>
+          <div class="twin-info">
+            <div class="twin-name">员工B · 用户运营</div>
+            <div class="twin-owner">← 林十三的数字人</div>
+          </div>
+        </div>
+        <div class="twin-abilities">
+          <span class="twin-ability">用户分层</span>
+          <span class="twin-ability">触达策略</span>
+          <span class="twin-ability">留存分析</span>
+        </div>
+      </div>
+      <div class="twin-card twin-cyan">
+        <div class="twin-top">
+          <div class="twin-avatar">🤖</div>
+          <div class="twin-info">
+            <div class="twin-name">员工C · 内容运营</div>
+            <div class="twin-owner">← 黄十四的数字人</div>
+          </div>
+        </div>
+        <div class="twin-abilities">
+          <span class="twin-ability">文案生成</span>
+          <span class="twin-ability">素材制作</span>
+          <span class="twin-ability">效果追踪</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- 三期能力演进 -->
+<div class="capability-section">
+  <div class="capability-title">🚀 三期能力演进</div>
+  <div class="capability-grid">
+
+    <div class="cap-card cap-p1">
+      <div class="cap-phase">PHASE 1 · 已完成</div>
+      <div class="cap-name">问答助手</div>
+      <div class="cap-sub">每个产品都有了数字分身</div>
+      <div class="cap-items">
+        <div class="cap-item"><div class="cap-dot"></div>回复线上问题（95%准确率）</div>
+        <div class="cap-item"><div class="cap-dot"></div>方案沟通与知识问答</div>
+        <div class="cap-item"><div class="cap-dot"></div>产品知识库沉淀</div>
+        <div class="cap-item"><div class="cap-dot"></div>已形成规模化应用</div>
+      </div>
+      <div class="cap-progress">
+        <div class="cap-bar-bg"><div class="cap-bar" style="width:95%"></div></div>
+        <span class="cap-pct">95%</span>
+      </div>
+    </div>
+
+    <div class="cap-card cap-p2">
+      <div class="cap-phase">PHASE 2 · 进行中</div>
+      <div class="cap-name">操作执行</div>
+      <div class="cap-sub">打通内部系统 → 产线生产</div>
+      <div class="cap-items">
+        <div class="cap-item"><div class="cap-dot"></div><strong>前半期</strong>：行云、XBP流转、配置工具</div>
+        <div class="cap-item"><div class="cap-dot"></div><strong>后半期</strong>：文档 · 设计稿 · 白皮书</div>
+        <div class="cap-item"><div class="cap-dot"></div>代码编写 · 上线发布</div>
+        <div class="cap-item"><div class="cap-dot"></div>单人技能覆盖率达 ~60%</div>
+      </div>
+      <div class="cap-progress">
+        <div class="cap-bar-bg"><div class="cap-bar" style="width:60%"></div></div>
+        <span class="cap-pct">60%</span>
+      </div>
+    </div>
+
+    <div class="cap-card cap-p3">
+      <div class="cap-phase">PHASE 3 · 规划中</div>
+      <div class="cap-name">编排协作</div>
+      <div class="cap-sub">数字人军团 · 大型项目落地</div>
+      <div class="cap-items">
+        <div class="cap-item"><div class="cap-dot"></div>多数字人编排与组合应用</div>
+        <div class="cap-item"><div class="cap-dot"></div>产品框架 · 产品规划</div>
+        <div class="cap-item"><div class="cap-dot"></div>产品落地细节全覆盖</div>
+        <div class="cap-item"><div class="cap-dot"></div>跨域协作自动化</div>
+      </div>
+      <div class="cap-progress">
+        <div class="cap-bar-bg"><div class="cap-bar" style="width:15%"></div></div>
+        <span class="cap-pct">规划</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- 编排场景示例 -->
+<div class="scenario-section">
+  <div class="scenario-title">⚙️ 第三期编排示例 <span style="font-weight:400;font-size:11px;color:var(--text3)">— 大型项目产品方案自动生成</span></div>
+  <div class="scenario-flow">
+    <div class="scenario-node">
+      <div class="scenario-node-icon">👤</div>
+      <div class="scenario-node-name">PM 下达目标</div>
+      <div class="scenario-node-desc">一句话描述项目</div>
+    </div>
+    <div class="scenario-arrow">→</div>
+    <div class="scenario-node highlight">
+      <div class="scenario-node-icon">🧠</div>
+      <div class="scenario-node-name">编排引擎</div>
+      <div class="scenario-node-desc">拆解→分发→监控</div>
+    </div>
+    <div class="scenario-arrow">→</div>
+    <div class="scenario-node">
+      <div class="scenario-node-icon" style="font-size:16px">📊🤖</div>
+      <div class="scenario-node-name">数据人·调研</div>
+      <div class="scenario-node-desc">市场数据+竞品</div>
+    </div>
+    <div class="scenario-arrow">→</div>
+    <div class="scenario-node">
+      <div class="scenario-node-icon" style="font-size:16px">📝🤖</div>
+      <div class="scenario-node-name">需求人·分析</div>
+      <div class="scenario-node-desc">需求拆解+优先级</div>
+    </div>
+    <div class="scenario-arrow">→</div>
+    <div class="scenario-node">
+      <div class="scenario-node-icon" style="font-size:16px">💡🤖</div>
+      <div class="scenario-node-name">方案人·输出</div>
+      <div class="scenario-node-desc">PRD+设计+白皮书</div>
+    </div>
+    <div class="scenario-arrow">→</div>
+    <div class="scenario-node">
+      <div class="scenario-node-icon" style="font-size:16px">🚀🤖</div>
+      <div class="scenario-node-name">运营人·落地</div>
+      <div class="scenario-node-desc">活动+触达+转化</div>
+    </div>
+    <div class="scenario-arrow">→</div>
+    <div class="scenario-node">
+      <div class="scenario-node-icon" style="font-size:16px">📋🤖</div>
+      <div class="scenario-node-name">项目人·排期</div>
+      <div class="scenario-node-desc">里程碑+资源分配</div>
+    </div>
+    <div class="scenario-arrow">→</div>
+    <div class="scenario-node">
+      <div class="scenario-node-icon">✅</div>
+      <div class="scenario-node-name">PM 审批</div>
+      <div class="scenario-node-desc">关键决策人审批</div>
+    </div>
+  </div>
+</div>
+
+<!-- 底部数据 -->
+<div class="stats-section">
+  <div class="stat-card">
+    <div class="stat-num" style="color:var(--green)">95%</div>
+    <div class="stat-label">一期最高准确率</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-num" style="color:var(--blue)">60%</div>
+    <div class="stat-label">二期单人技能覆盖</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-num" style="color:var(--purple)">N×N</div>
+    <div class="stat-label">三期编排组合数</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-num" style="color:var(--amber)">5</div>
+    <div class="stat-label">核心工作域</div>
+  </div>
+</div>
+
+<div class="footer">
+  AI时代 · 产品经理数字员工架构 — 可编排的员工数字人<br>
+  京东应用产品部 · 2025
+</div>
+
+</div>
+</body>
+</html>
